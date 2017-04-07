@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="wpfShoppingCart.Views.CartView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wpfShoppingCart.Views"
+        mc:Ignorable="d"
+        Height="500" Width="500">
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Shopping Cart" FontSize="25" Margin="10"/>
+            <DataGrid IsSynchronizedWithCurrentItem="True" ScrollViewer.CanContentScroll="True"  ScrollViewer.VerticalScrollBarVisibility="Auto" Height="300" AutoGenerateColumns="False" ItemsSource="{Binding myCart,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding selectedOrder,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Image">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding imageUrl,UpdateSourceTrigger=PropertyChanged}" Height="100" Width="100" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn  Header="Product Name" Binding="{Binding productName,UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn  Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTemplateColumn  Header="Cost Of Product">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+									<Run Text="{Binding TotalCost,UpdateSourceTrigger=PropertyChanged}"/>
+									<Run Text="$"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+									AncestorType={x:Type DataGrid}}, Path=DataContext.deleteCommand}">
+                                    <StackPanel>
+                                        <Image Source="/Images/delete.png" Width="25" Height="25"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+                
+            </DataGrid>
+            <StackPanel Orientation="Horizontal" Margin="250,30,0,0">
+                
+                <TextBlock Text="Your Total" Width="60" />
+                <TextBlock Text="{Binding finalCost,UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+            </StackPanel>
+            <StackPanel Margin="10">
+                <Button Content="Place Order" Width="75" Command="{Binding placeOrderCommand}"/>
+            </StackPanel>
+        </StackPanel>
+        
+    </Grid>
+</UserControl>
